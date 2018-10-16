@@ -13,5 +13,13 @@
     "webpack"
   ],
   "author": "1501718947@qq.com",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jibenziliao/vue-ssr.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jibenziliao/vue-ssr/issues"
+  },
+  "homepage": "https://github.com/jibenziliao/vue-ssr#readme"
 }
