@@ -15,7 +15,7 @@ export default () => {
         }
       }
     ],
-    scrollBehavior(to) {
+    scrollBehavior (to) {
       return {
         x: 0,
         y: 0

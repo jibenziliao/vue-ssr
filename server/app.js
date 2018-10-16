@@ -1,5 +1,6 @@
 const path = require('path')
 const Koa = require('koa')
+const favicon = require('koa-favicon')
 const koaStatic = require('koa-static')
 const app = new Koa()
 
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use(koaStatic(path.join(__dirname, '../dist')))
+app.use(favicon(path.join(__dirname, '../favicon.ico')))
 app.use(router.routes())
 
 // 启动

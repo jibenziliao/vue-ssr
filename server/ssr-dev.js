@@ -26,6 +26,7 @@ serverCompiler.watch({}, (err, stats) => {
 
 // 正式ssr逻辑
 const handleSSR = async (ctx) => {
+  // console.log(ctx)
   if (bundle === 'undefined') {
     ctx.body = '刷新试试？'
   }
