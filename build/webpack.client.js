@@ -16,7 +16,7 @@ module.exports = merge(baseConfig, {
   output: {
     path: path.resolve(__dirname, '../dist'),
     filename: 'js/[name].js',
-    publicPath: isDev ? 'http://localhost:8082/' : '//alicdn.imh3.cn/'
+    publicPath: isDev ? 'http://localhost:8085/' : '//alicdn.imh3.cn/'
   },
   module: {
     rules: [
