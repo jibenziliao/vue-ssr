@@ -29,7 +29,7 @@ const handleSSR = async (ctx) => {
   if (bundle === 'undefined') {
     ctx.body = '刷新试试？'
   }
-  const clientManifestRes = await axios.get('http://localhost:8085/vue-ssr-client-manifest.json')
+  const clientManifestRes = await axios.get('http://localhost:8082/vue-ssr-client-manifest.json')
   const clientManifest = clientManifestRes.data
   const template = fs.readFileSync(
     path.join(__dirname, './template.html'),
