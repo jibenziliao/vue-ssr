@@ -2,8 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const VueServerPlugin = require('vue-server-renderer/server-plugin')
+const utils = require('./utils')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
-
 const isDev = process.env.NODE_ENV === 'development'
 const baseConfig = require('./webpack.base')
 
@@ -32,30 +32,7 @@ module.exports = merge(baseConfig, {
   },
   externals: Object.keys(require('../package.json').dependencies),
   module: {
-    rules: [
-      {
-        test: /\.styl(us)?$/,
-        use: [
-          'vue-style-loader',
-          'css-loader',
-          'stylus-loader'
-        ]
-      },
-      {
-        test: /\.css$/,
-        use: [
-          'vue-style-loader',
-          'css-loader'
-        ]
-      },
-      {
-        test: /\.vue$/,
-        loader: 'vue-loader',
-        options: {
-          preserveWhitespace: true
-        }
-      },
-    ]
+    rules: utils.styleLoaders()
   },
   plugins
 })

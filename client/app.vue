@@ -25,11 +25,6 @@ export default {
 }
 </script>
 
-<style lang="css">
-  .home {
-    margin: 60px auto;
-  }
-  .main {
-    width: 100%;
-  }
+<style lang="scss">
+  @import "./styles/common";
 </style>

@@ -1,4 +1,5 @@
 const path = require('path')
+const vueLoaderConfig = require('./vue-loader.conf')
 
 module.exports = {
   mode: 'production',
@@ -35,6 +36,11 @@ module.exports = {
             }
           }
         ]
+      },
+      {
+        test: /\.vue$/,
+        loader: 'vue-loader',
+        options: vueLoaderConfig
       }
     ]
   }
