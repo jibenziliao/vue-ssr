@@ -15,24 +15,45 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(js|vue)$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [path.resolve('client'), path.resolve('server')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
+      {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['stage-0'],
+            // presets: ['stage-0'],
             plugins: ['syntax-dynamic-import']
           }
         }
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         use: [
           {
             loader: 'url-loader',
             options: {
               limit: 8192,
-              name: '[name].[ext]'
+              name: 'img/[name].[hash:7].[ext]'
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 8192,
+              name: 'fonts/[name].[hash:7].[ext]'
             }
           }
         ]

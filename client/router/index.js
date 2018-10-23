@@ -1,6 +1,6 @@
 import Router from 'vue-router'
 
-const Home = () => import('component/home/home.vue')
+const Home = () => import('component/home/Home.vue')
 
 export default () => {
   return new Router({

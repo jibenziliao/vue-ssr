@@ -1,5 +1,5 @@
-function getTitle(vm) {
-  const {title} = vm.$options
+function getTitle (vm) {
+  const { title } = vm.$options
   if (title) {
     return typeof title === 'function'
       ? title.call(vm)
@@ -8,7 +8,7 @@ function getTitle(vm) {
 }
 
 const serverTitleMixin = {
-  created() {
+  created () {
     const title = getTitle(this)
     if (title) {
       this.$ssrContext.title = title
@@ -16,11 +16,11 @@ const serverTitleMixin = {
   }
 }
 const clientTitleMixin = {
-  updated() {
-      const title = getTitle(this)
-      if (title) {
-        document.title = title
-      }
+  updated () {
+    const title = getTitle(this)
+    if (title) {
+      document.title = title
+    }
   }
 }
 export default process.env.VUE_ENV === 'server'

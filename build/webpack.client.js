@@ -6,6 +6,7 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const utils = require('./utils')
 const baseConfig = require('./webpack.base')
 const isDev = process.env.NODE_ENV === 'development'
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
 
 module.exports = merge(baseConfig, {
   entry: {
@@ -29,6 +30,7 @@ module.exports = merge(baseConfig, {
     new VueClientPlugin(),
     new VueLoaderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new FriendlyErrorsPlugin()
   ],
   devServer: {
     hot: true,
