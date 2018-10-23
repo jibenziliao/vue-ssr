@@ -7,7 +7,7 @@
     "build:client": "cross-env NODE_ENV=production webpack --config build/webpack.client.js --mode production",
     "build:server": "cross-env NODE_ENV=production webpack --config build/webpack.server.js --mode production",
     "dev:client": "cross-env NODE_ENV=development webpack-dev-server --mode development --config build/webpack.client.js",
-    "build": "yarn build:client && yarn build:server && yarn build:spa --mode production",
+    "build": "yarn build:client && yarn build:server --mode production",
     "dev": "cross-env NODE_ENV=development concurrently \"yarn dev:client --mode development\" \"nodemon server/app.js\" ",
     "start": "node server/app.js"
   },
