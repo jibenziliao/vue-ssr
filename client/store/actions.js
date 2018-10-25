@@ -1,11 +1,13 @@
-import { getPorductsByStatus } from '../api/products'
+import { commonRequest } from '../api/api'
+import * as types from './mutationTypes'
 
 export default {
-  getProductList ({ commit }) {
-    return getPorductsByStatus(1, 20).then((res) => {
-      commit('getProducts', res.data.products)
-    }).catch(e => {
-      console.log(e)
-    })
+  action ({ commit }, params) {
+    commit(types.REQUEST_BEGIN, params)
+    commonRequest(params, res => commit(types.REQUEST_SUCCESS, { params, res }), err => commit(types.REQUEST_FAILED, { params, err }))
+  },
+  asyncAction ({ commit }, params) {
+    commit(types.FETCH_BEGIN, params)
+    commonRequest(params, res => commit(types.FETCH_SUCCESS, { params, res }), err => commit(types.FETCH_FAILED, { params, err }))
   }
 }

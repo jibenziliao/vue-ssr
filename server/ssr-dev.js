@@ -5,12 +5,10 @@ const path = require('path')
 const MemoryFs = require('memory-fs')
 const webpack = require('webpack')
 const VueServerRenderer = require('vue-server-renderer')
-
 const serverConfig = require('../build/webpack.server')
-
 const serverCompiler = webpack(serverConfig)
-
 const mfs = new MemoryFs()
+
 serverCompiler.outputFileSystem = mfs
 
 let bundle
