@@ -1,5 +1,5 @@
 export default {
-  products: [],
+  loading: false,
   pageLoading: false,
   loadSuccess: false,
   organizationDetail: {},

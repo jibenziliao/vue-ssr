@@ -3,7 +3,7 @@ import store from '../../store/index'
  * 通用请求
  * @param {args} args 对象参数包含action类型、url、method、params、data
  */
-export const requestFn = (args) => {
+const requestFn = (args) => {
   return new Promise((resolve, reject) => {
     store().dispatch(args.action || 'action', {
       url: args.url || '',
@@ -20,4 +20,28 @@ export const requestFn = (args) => {
   }).catch(err => {
     return { state: null, res: err }
   })
+}
+
+const asyncRequest = (args, storeParam) => {
+  return new Promise((resolve, reject) => {
+    storeParam.dispatch(args.action || 'asyncAction', {
+      url: args.url || '',
+      method: args.method || 'get',
+      params: args.params || {},
+      data: args.data || {},
+      resolveFn: (state, res) => {
+        resolve({ state, res })
+      },
+      rejectFn: (state, err) => {
+        reject(err)
+      }
+    })
+  }).catch(err => {
+    return { state: null, res: err }
+  })
+}
+
+export {
+  requestFn,
+  asyncRequest
 }

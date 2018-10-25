@@ -23,15 +23,22 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { requestFn } from '../../common/utils/request'
+import { requestFn, asyncRequest } from '../../common/utils/request'
 export default {
   data () {
     return {
 
     }
   },
-  asyncData ({ store, route }) {
-    return store.dispatch('getOrganizations', { page: 1, per_page: 10 })
+  async asyncData ({ store, route }) {
+    let { state, res } = await asyncRequest({
+      url: '/v1/service/23/enterprises',
+      method: 'get',
+      params: { page: 1, per_page: 10 }
+    }, store)
+    if (res.data) {
+      state.organizations = res.data.enterprises
+    }
   },
   methods: {
     goDetail (id) {

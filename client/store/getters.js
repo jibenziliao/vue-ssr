@@ -1,5 +1,5 @@
 export default {
-  products: state => state.products,
+  loading: state => state.loading,
   pageLoading: state => state.pageLoading,
   loadSuccess: state => state.loadSuccess,
   organizationDetail: state => state.organizationDetail,

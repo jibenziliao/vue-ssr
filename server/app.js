@@ -28,7 +28,7 @@ app.use(koaStatic(path.join(__dirname, '../dist')))
 app.use(favicon(path.join(__dirname, '../favicon.ico')))
 app.use(router.routes())
 
-// 启动
-app.listen(8085, () => {
-  console.log('koa server starting')
+let port = 8085
+app.listen(port, () => {
+  console.log(`[info]: koa server is deploy on port: ${port}`)
 })
