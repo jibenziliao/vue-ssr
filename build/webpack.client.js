@@ -35,6 +35,13 @@ module.exports = merge(baseConfig, {
   devServer: {
     hot: true,
     compress: true,
-    port: 8082
+    port: 8082,
+    https: false,
+    hot: true,
+    historyApiFallback: true,
+    hotOnly: true,
+    proxy: {
+      '/api': 'https://api.yunlu6.com'
+    }
   }
 })

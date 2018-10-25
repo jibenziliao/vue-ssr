@@ -6,7 +6,7 @@ module.exports = {
   optimization: {},
   resolve: {
     alias: {
-      component: path.resolve(__dirname, '../client/component'),
+      views: path.resolve(__dirname, '../client/views'),
       common: path.resolve(__dirname, '../client/common'),
       api: path.resolve(__dirname, '../client/api'),
       store: path.resolve(__dirname, '../client/store')

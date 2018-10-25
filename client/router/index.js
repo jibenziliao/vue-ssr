@@ -1,6 +1,7 @@
 import Router from 'vue-router'
 
-const Home = () => import('component/home/Home.vue')
+const Home = () => import('views/home/Home.vue')
+const OrganizationList = () => import('views/organization/OrganizationList.vue')
 
 export default () => {
   return new Router({
@@ -8,8 +9,14 @@ export default () => {
     fallback: false,
     routes: [
       {
-        path: '/',
+        path: '/organizations/:id',
         component: Home,
+        meta: {
+          keepAlive: false
+        }
+      }, {
+        path: '/organization_list',
+        component: OrganizationList,
         meta: {
           keepAlive: true
         }

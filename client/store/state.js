@@ -1,3 +1,7 @@
 export default {
-  products: []
+  products: [],
+  pageLoading: false,
+  loadSuccess: false,
+  organizationDetail: {},
+  organizations: []
 }
