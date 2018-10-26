@@ -1,9 +1,11 @@
-FROM node:8.12.0-alpine
-COPY . /app
+FROM node:8.12.0
+
+COPY package.json /app/
 WORKDIR /app
-RUN npm install cnpm --registry=https://registry.npm.taobao.org/ && \
-    cnpm install
+
+RUN npm install
+
+COPY . /app
 RUN npm run build && \
-    echo "$(git log -1 --pretty=format:"%h - %an, %ar: %s")" > /app/dist/version && \
-    npm run start
+    echo "$(git log -1 --pretty=format:"%h - %an, %ar: %s")" > /app/dist/version
 EXPOSE 8085
