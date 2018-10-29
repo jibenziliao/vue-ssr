@@ -7,5 +7,6 @@ RUN npm install
 
 COPY . /app
 RUN npm run build && \
-    echo "$(git log -1 --pretty=format:"%h - %an, %ar: %s")" > /app/dist/version
+    echo "$(git log -1 --pretty=format:"%h - %an, %ar: %s")" > /app/dist/version && \
+    npm run start
 EXPOSE 8085
