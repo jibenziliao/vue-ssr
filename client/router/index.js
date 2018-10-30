@@ -9,6 +9,12 @@ export default () => {
     fallback: false,
     routes: [
       {
+        path: '/',
+        component: OrganizationList,
+        meta: {
+          keepAlive: true
+        }
+      }, {
         path: '/organizations/:id',
         component: Home,
         meta: {
