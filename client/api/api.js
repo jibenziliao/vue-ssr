@@ -5,7 +5,7 @@ const commonRequest = (params, resolve, reject) => {
   return axios.request({
     url: params.url,
     method: params.method,
-    baseURL: `${API_URL}/api/`,
+    baseURL: `${params.side === 'server' ? API_URL : ''}/api/`,
     params: params.params || {},
     data: {
       ...(params.data || {})

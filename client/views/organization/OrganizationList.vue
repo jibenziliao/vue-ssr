@@ -30,12 +30,12 @@ export default {
 
     }
   },
-  async asyncData ({ store, route }) {
+  async asyncData ({ store, route, side = 'server' }) {
     let { state, res } = await asyncRequest({
       url: '/v1/service/23/enterprises',
       method: 'get',
       params: { page: 1, per_page: 10 }
-    }, store)
+    }, store, side)
     if (res.data) {
       state.organizations = res.data.enterprises
     }

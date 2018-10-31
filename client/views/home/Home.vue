@@ -46,12 +46,12 @@ export default {
     return {
     }
   },
-  async asyncData ({ store, route }) {
+  async asyncData ({ store, route, side = 'server' }) {
     let { state, res } = await asyncRequest({
       url: `/v2/public/organizations/${route.params.id}`,
       method: 'get',
       params: { id: route.params.id }
-    }, store)
+    }, store, side)
     if (res.data) {
       state.organizationDetail = res.data.data.organization
     }

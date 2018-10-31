@@ -14,7 +14,8 @@ Vue.mixin({
     if (asyncData) {
       asyncData({
         store: this.$store,
-        route: to
+        route: to,
+        side: 'client'
       }).then(next).catch(next)
     } else {
       next()
@@ -25,7 +26,8 @@ Vue.mixin({
     if (asyncData) {
       asyncData({
         store: this.$store,
-        route: this.$route
+        route: this.$route,
+        side: 'client'
       })
     }
   }

@@ -10,6 +10,7 @@ const requestFn = (args) => {
       method: args.method || 'get',
       params: args.params || {},
       data: args.data || {},
+      side: args.side || 'client',
       resolveFn: (state, res) => {
         resolve({ state: state, res: res })
       },
@@ -22,13 +23,14 @@ const requestFn = (args) => {
   })
 }
 
-const asyncRequest = (args, storeParam) => {
+const asyncRequest = (args, storeParam, side) => {
   return new Promise((resolve, reject) => {
     storeParam.dispatch(args.action || 'asyncAction', {
       url: args.url || '',
       method: args.method || 'get',
       params: args.params || {},
       data: args.data || {},
+      side: side,
       resolveFn: (state, res) => {
         resolve({ state, res })
       },
