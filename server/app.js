@@ -19,6 +19,7 @@ app.use(async (ctx, next) => {
     ctx.respond = false
     return proxy({
       target: 'https://api.yunlu6.com',
+      pathRewrite: { '^/api': '/api' },
       changeOrigin: true
     })(ctx.req, ctx.res, next)
   }
