@@ -39,9 +39,10 @@ module.exports = merge(baseConfig, {
     https: false,
     hot: true,
     historyApiFallback: true,
-    hotOnly: true,
-    proxy: {
+    hotOnly: true
+    // koa中统一代理，这里不用webpack的代理
+    /* proxy: {
       '/api': 'https://api.yunlu6.com'
-    }
+    } */
   }
 })
