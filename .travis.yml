@@ -15,6 +15,16 @@ script:
 addons:
   ssh_known_hosts:
   - 35.194.232.72
+deploy:
+  provider: releases
+  api_key:
+    secure: $GITHUB_API_KEY_ENCRYPTED
+  file_glob: true
+  file: ./
+  skip_cleanup: true
+  on:
+    tags: true
+
 after_success:
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 - docker build -t vue-ssr:$TRAVIS_BRANCH .
