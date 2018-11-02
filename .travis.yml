@@ -16,11 +16,11 @@ addons:
 after_success:
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 - docker image rm vue-ssr
-- docker build -t vue-ssr:latest .
-- docker tag vue-ssr:latest $DOCKER_USERNAME/vue-ssr:latest
-- docker push $DOCKER_USERNAME/vue-ssr:latest
+- docker build -t vue-ssr:$TRAVIS_BRANCH .
+- docker tag vue-ssr:$TRAVIS_BRANCH $DOCKER_USERNAME/vue-ssr:$TRAVIS_BRANCH
+- docker push $DOCKER_USERNAME/vue-ssr:$TRAVIS_BRANCH
 - chmod 600 ~/.ssh/id_rsa
-- ssh -o stricthostkeychecking=no keyangyang@35.194.232.72 "/home/keyangyang/project/vue-ssr-nginx/deploy.sh"
+- ssh -o stricthostkeychecking=no keyangyang@35.194.232.72 "sh /home/keyangyang/project/vue-ssr-nginx/deploy.sh $TRAVIS_BRANCH"
 before_install:
 - openssl aes-256-cbc -K $encrypted_c3671bf7c2b3_key -iv $encrypted_c3671bf7c2b3_iv
   -in travis_rsa.enc -out ~/.ssh/id_rsa -d
