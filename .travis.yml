@@ -24,14 +24,30 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
-
 after_success:
 - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
 - docker build -t vue-ssr:$TRAVIS_BRANCH .
 - docker tag vue-ssr:$TRAVIS_BRANCH $DOCKER_USERNAME/vue-ssr:$TRAVIS_BRANCH
 - docker push $DOCKER_USERNAME/vue-ssr:$TRAVIS_BRANCH
-- chmod 600 ~/.ssh/id_rsa
-- ssh -o stricthostkeychecking=no keyangyang@35.194.232.72 "sh /home/keyangyang/project/vue-ssr-nginx/deploy.sh $TRAVIS_BRANCH"
+- chmod 600 ~/.ssh/id_rsa # travis服务器上的私钥名必须为id_rsa
+- ssh -o stricthostkeychecking=no keyangyang@35.194.232.72 "sh /home/keyangyang/project/vue-ssr-nginx/deploy.sh $DOCKER_USERNAME vue-ssr $TRAVIS_BRANCH 8085 8085" # deploy.sh后面有5个参数
 before_install:
 - openssl aes-256-cbc -K $encrypted_c3671bf7c2b3_key -iv $encrypted_c3671bf7c2b3_iv
-  -in travis_rsa.enc -out ~/.ssh/id_rsa -d
+- in travis_rsa.enc -out ~/.ssh/id_rsa -d
+
+# shell 示例
+#sh deploy.sh jibenziliao vue-ssr v0.1.5 8085 8085
+#
+##!/bin/bash
+#
+#docker pull $1/$2:$3
+#
+#if docker ps -a | grep -q $2; then
+#    docker rm -f $2
+#    docker image prune -a -f
+#fi
+#
+#docker pull $1/$2:$3
+#
+#docker run -d --name $2 -p $4:$5 $1/$2:$3
+#
