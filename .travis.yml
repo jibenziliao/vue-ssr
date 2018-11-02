@@ -17,7 +17,7 @@ after_success:
 - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
 - docker image rm vue-ssr
 - docker build -t vue-ssr .
-- docker push jibenziliao/vue-ssr:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID;
+- docker push $DOCKER_USERNAME/vue-ssr:$TRAVIS_BRANCH-$TRAVIS_BUILD_ID;
 - chmod 600 ~/.ssh/travis_rsa
 - ssh -o stricthostkeychecking=no keyangyang@35.194.232.72 "/home/keyangyang/project/vue-ssr-nginx/deploy.sh
   $TRAVIS_BRANCH-$TRAVIS_BUILD_ID"
