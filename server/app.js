@@ -3,6 +3,7 @@ const Koa = require('koa')
 const favicon = require('koa-favicon')
 const koaStatic = require('koa-static')
 const proxy = require('http-proxy-middleware')
+const config = require('./config')
 const app = new Koa()
 
 // 配置路由
@@ -14,14 +15,11 @@ if (process.env.NODE_ENV === 'development') {
   router = require('./ssr-online')
 }
 
+// 代理掘金数据接口
 app.use(async (ctx, next) => {
   if (ctx.url.startsWith('/api')) {
     ctx.respond = false
-    return proxy({
-      target: 'https://api.yunlu6.com',
-      pathRewrite: { '^/api': '/api' },
-      changeOrigin: true
-    })(ctx.req, ctx.res, next)
+    return proxy(config.proxyOptions)(ctx.req, ctx.res, next)
   }
   return next()
 })

@@ -1,11 +1,14 @@
 import axios from 'axios'
-import { API_URL, REQUEST_TIME_OUT } from '../constants/constant'
+import { REQUEST_TIME_OUT } from '../constants/constant'
+
+const host = process.env.HOST || 'localhost'
+const port = process.env.PORT || 8085
 
 const commonRequest = (params, resolve, reject) => {
   return axios.request({
     url: params.url,
     method: params.method,
-    baseURL: `${params.side === 'server' ? API_URL : ''}/api/`,
+    baseURL: `${params.side === 'server' ? `http://${host}:${port}` : ''}/api`,
     params: params.params || {},
     data: {
       ...(params.data || {})

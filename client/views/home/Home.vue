@@ -1,117 +1,166 @@
 <template>
-  <div class="home-container">
-    <p class="title">下面是机构详情</p>
-    <ul v-if="!pageLoading"
-        class="list">
-      <li class="item">
-        <span class="label">机构id:</span>
-        <span class="value">{{organization.id}}</span>
-      </li>
-      <li class="item">
-        <span class="label">机构名:</span>
-        <span class="value">{{organization.name}}</span>
-      </li>
-      <li class="item">
-        <span class="label">机构名:</span>
-        <span class="value">{{organization.name}}</span>
+  <div class="list-page">
+    <ul class="entry-list">
+      <li v-for="(item, index) in entryList"
+          :key="index"
+          class="item"
+          @click="goPostDetail(item.objectId)">
+        <div class="content-box">
+          <div class="info-box">
+            <div class="info-row meta-row">
+              <ul class="meta-list">
+                <li class="row-item username clickable">
+                  <a>{{item.user.username}}</a>
+                </li>
+                <li class="row-item">
+                  {{item.tags[0].title}}
+                </li>
+              </ul>
+            </div>
+            <div class="info-row title-row">
+              <a class="title">{{item.title}}</a>
+            </div>
+            <div class="info-row action-row">
+              <ul class="action-list">
+                <li class="row-item like">
+                  <a class="title-box">
+                    <i class="iconfont icon-dianzan item-icon"></i>
+                    <span class="count">{{item.collectionCount}}</span>
+                  </a>
+                </li>
+                <li class="row-item comment">
+                  <a class="title-box">
+                    <i class="iconfont icon-pinglun item-icon"></i>
+                    <span class="count">{{item.commentsCount}}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </li>
     </ul>
-    <ul v-else
-        class="list empty-list">
-      <li class="item">
-        <span class="label empty"></span>
-        <span class="value empty"></span>
-      </li>
-      <li class="item">
-        <span class="label empty"></span>
-        <span class="value empty"></span>
-      </li>
-      <li class="item">
-        <span class="label empty"></span>
-        <span class="value empty"></span>
-      </li>
-    </ul>
-    <router-link to="/organization_list"
-                 class="link-button">前往机构列表页</router-link>
-    <router-link to="/organizations/1325"
-                 class="link-button">前往另一个机构</router-link>
   </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import { asyncRequest } from '../../common/utils/request'
+import { hostConfig } from '../../api/config'
 export default {
   data () {
     return {
+
     }
   },
   async asyncData ({ store, route, side = 'server' }) {
     let { state, res } = await asyncRequest({
-      url: `/v2/public/organizations/${route.params.id}`,
+      url: `${hostConfig.timeline}/get_entry_by_rank`,
       method: 'get',
-      params: { id: route.params.id }
+      params: {
+        src: 'web',
+        limit: 20,
+        category: 'all',
+        sort: 'popular'
+      }
     }, store, side)
-    if (res.data) {
-      state.organizationDetail = res.data.data.organization
+    if (res.data.m === 'ok') {
+      state.entryList = res.data.d.entrylist
     }
   },
   methods: {
-    ...mapActions(['getOrganizationDetail'])
+    goPostDetail (id) {
+      this.$router.push({ path: `/post/${id}` })
+    }
   },
   computed: {
-    ...mapGetters([
-      'organizationDetail',
-      'pageLoading'
-    ]),
-    organization () {
-      return this.$store.getters.organizationDetail
-    }
+    ...mapGetters(['entryList'])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .home-container {
-    .title {
-      font-size: 32px;
-      color: #333;
-    }
-    .list {
-      .item {
-        height: 100px;
-        width: 100%;
+  .entry-list {
+    width: 100%;
+    background-color: #fff;
+    .item {
+      border-bottom: 1px solid rgba(178, 186, 194, 0.15);
+      .content-box {
         display: flex;
         align-items: center;
-        font-size: 32px;
-        .label {
-          color: #595959;
-        }
-        .value {
-          color: #333;
+        padding: 36px 48px;
+        .info-box {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          justify-content: center;
+          flex: 1 1 auto;
+          min-width: 0;
+          .meta-row {
+            font-size: 24px;
+            color: #b2bac2;
+            .meta-list {
+              display: flex;
+              align-items: baseline;
+              white-space: nowrap;
+              .row-item:not(:last-child):after {
+                content: "\B7";
+                margin: 0 0.4em;
+                color: #b2bac2;
+              }
+            }
+          }
+          .title-row {
+            margin: 12px 0 24px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            .title {
+              font-size: 28px;
+              font-weight: 600;
+              line-height: 1.2;
+              color: #2e3135;
+            }
+            .title:visited {
+              color: #909090;
+            }
+          }
+          .action-list {
+            display: inline-flex;
+            white-space: nowrap;
+            .row-item {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              position: relative;
+              height: 36px;
+              font-size: 24px;
+              border: 1px solid #edeeef;
+              line-height: 1;
+              white-space: nowrap;
+              color: #b2bac2;
+              .title-box {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0 20px;
+                height: 100%;
+                .item-icon {
+                  font-size: 26px;
+                  color: #b2bac2;
+                  margin-right: 10px;
+                }
+              }
+            }
+            .like {
+              margin-right: -1px;
+            }
+            .comment {
+              margin-left: -1px;
+            }
+          }
         }
       }
-    }
-    .empty-list {
-      .empty {
-        width: 120px;
-        height: 40px;
-        display: block;
-        background-color: #e0e0e0;
-        margin-right: 20px;
-      }
-    }
-    .link-button {
-      font-size: 36px;
-      text-align: center;
-      display: block;
-      height: 98px;
-      line-height: 98px;
-      width: 100%;
-      background-color: rgb(57, 182, 231);
-      color: #fff;
-      margin-top: 30px;
     }
   }
 </style>
-
