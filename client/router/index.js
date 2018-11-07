@@ -1,7 +1,7 @@
 import Router from 'vue-router'
 
+const Post = () => import('views/post/Post.vue')
 const Home = () => import('views/home/Home.vue')
-const OrganizationList = () => import('views/organization/OrganizationList.vue')
 
 export default () => {
   return new Router({
@@ -10,21 +10,15 @@ export default () => {
     routes: [
       {
         path: '/',
-        component: OrganizationList,
-        meta: {
-          keepAlive: true
-        }
-      }, {
-        path: '/organizations/:id',
         component: Home,
         meta: {
-          keepAlive: false
+          keepAlive: true
         }
       }, {
-        path: '/organization_list',
-        component: OrganizationList,
+        path: '/post/:id',
+        component: Post,
         meta: {
-          keepAlive: true
+          keepAlive: false
         }
       }
     ],
