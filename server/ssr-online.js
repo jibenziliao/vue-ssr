@@ -18,7 +18,8 @@ const router = new Router()
 router.get('*', async ctx => {
   ctx.type = 'html'
   const context = {
-    url: ctx.path
+    url: ctx.path,
+    cookies: ctx.request.header.cookie
   }
   try {
     const app = await bundle(context)

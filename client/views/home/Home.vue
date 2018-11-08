@@ -4,7 +4,7 @@
       <li v-for="(item, index) in entryList"
           :key="index"
           class="item"
-          @click="goPostDetail(item.objectId)">
+          @click="goPostDetail(item.originalUrl)">
         <div class="content-box">
           <div class="info-box">
             <div class="info-row meta-row">
@@ -45,7 +45,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { asyncRequest } from '../../common/utils/request'
+import { asyncRequest, getPostId } from '../../common/utils'
 import { hostConfig } from '../../api/config'
 export default {
   data () {
@@ -53,7 +53,7 @@ export default {
 
     }
   },
-  async asyncData ({ store, route, side = 'server' }) {
+  async asyncData ({ store, route, side = 'server', cookies }) {
     let { state, res } = await asyncRequest({
       url: `${hostConfig.timeline}/get_entry_by_rank`,
       method: 'get',
@@ -63,14 +63,14 @@ export default {
         category: 'all',
         sort: 'popular'
       }
-    }, store, side)
+    }, store, side, cookies)
     if (res.data.m === 'ok') {
       state.entryList = res.data.d.entrylist
     }
   },
   methods: {
-    goPostDetail (id) {
-      this.$router.push({ path: `/post/${id}` })
+    goPostDetail (originalUrl) {
+      this.$router.push({ path: `/post/${getPostId(originalUrl)}` })
     }
   },
   computed: {

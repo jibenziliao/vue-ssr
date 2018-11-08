@@ -37,9 +37,10 @@ const handleSSR = async (ctx) => {
     template,
     clientManifest
   })
-
+  console.log(ctx.request.header.cookie)
   const context = {
-    url: ctx.path
+    url: ctx.path,
+    cookies: ctx.request.header.cookie
   }
   const appString = await renderer.renderToString(context)
 

@@ -1,6 +1,8 @@
 <template>
   <div class="post-container">
-    <div class="post-content"
+    <div v-if="pageLoading">正在加载。。。</div>
+    <div v-else
+         class="post-content markdown-body"
          v-html="content"></div>
   </div>
 </template>
@@ -14,8 +16,17 @@ export default {
     return {
     }
   },
-  async asyncData ({ store, route, side = 'server' }) {
-    let { state, res } = await asyncRequest({
+  async asyncData ({ store, route, side = 'server', cookies }) {
+    await asyncRequest({
+      url: `${hostConfig.post}/getDetailData`,
+      method: 'get',
+      params: {
+        src: 'web',
+        postId: route.params.id,
+        type: 'entry'
+      }
+    }, store, side, cookies)
+    let result = await asyncRequest({
       url: `${hostConfig.post}/getDetailData`,
       method: 'get',
       params: {
@@ -23,9 +34,9 @@ export default {
         postId: route.params.id,
         type: 'entryView'
       }
-    }, store, side)
-    if (res.data.m === 'ok') {
-      state.content = res.data.d.content
+    }, store, side, cookies)
+    if (result.res.data.m === 'ok') {
+      result.state.content = result.res.data.d.transcodeContent
     }
   },
   computed: {
@@ -38,45 +49,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .home-container {
-    .title {
-      font-size: 32px;
-      color: #333;
-    }
-    .list {
-      .item {
-        height: 100px;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        font-size: 32px;
-        .label {
-          color: #595959;
-        }
-        .value {
-          color: #333;
-        }
-      }
-    }
-    .empty-list {
-      .empty {
-        width: 120px;
-        height: 40px;
-        display: block;
-        background-color: #e0e0e0;
-        margin-right: 20px;
-      }
-    }
-    .link-button {
-      font-size: 36px;
-      text-align: center;
-      display: block;
-      height: 98px;
-      line-height: 98px;
+  @import url("https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css");
+  .post-container {
+    padding: 0 48px;
+  }
+  .markdown-body {
+    font-size: 32px;
+    img {
       width: 100%;
-      background-color: rgb(57, 182, 231);
-      color: #fff;
-      margin-top: 30px;
+    }
+  }
+  .post-content {
+    img {
+      width: 100%;
     }
   }
 </style>
