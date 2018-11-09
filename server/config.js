@@ -12,7 +12,8 @@ const hostConfig = {
   gold: 'https://gold-tag-ms.juejin.im/v1',
   lccro: 'https://lccro-api-ms.juejin.im/v1',
   follow: 'https://follow-api-ms.juejin.im/v1',
-  event: 'https://event-storage-api-ms.juejin.im/v1'
+  event: 'https://event-storage-api-ms.juejin.im/v1',
+  entry: 'https://entry-view-storage-api-ms.juejin.im/v1'
 }
 
 exports.proxyOptions = {
@@ -32,7 +33,8 @@ exports.proxyOptions = {
     '^/api/gold': '/',
     '^/api/lccro': '/',
     '^/api/follow': '/',
-    '^/api/event': '/'
+    '^/api/event': '/',
+    '^/api/entry': '/'
   },
   headers: {
     Referer: 'https://juejin.im/'

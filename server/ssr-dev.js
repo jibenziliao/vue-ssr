@@ -37,7 +37,6 @@ const handleSSR = async (ctx) => {
     template,
     clientManifest
   })
-  console.log(ctx.request.header.cookie)
   const context = {
     url: ctx.path,
     cookies: ctx.request.header.cookie

@@ -1,10 +1,10 @@
 <template>
   <div class="list-page">
     <ul class="entry-list">
-      <li v-for="(item, index) in entryList"
-          :key="index"
+      <li v-for="item in entryList"
+          :key="item.originalUrl"
           class="item"
-          @click="goPostDetail(item.originalUrl)">
+          @click="goPostDetail(item)">
         <div class="content-box">
           <div class="info-box">
             <div class="info-row meta-row">
@@ -12,13 +12,15 @@
                 <li class="row-item username clickable">
                   <a>{{item.user.username}}</a>
                 </li>
-                <li class="row-item">
+                <li v-if="item.tags && item.tags.length > 0"
+                    class="row-item">
                   {{item.tags[0].title}}
                 </li>
               </ul>
             </div>
             <div class="info-row title-row">
-              <a class="title">{{item.title}}</a>
+              <a v-if="item.title"
+                 class="title">{{item.title}}</a>
             </div>
             <div class="info-row action-row">
               <ul class="action-list">
@@ -69,8 +71,14 @@ export default {
     }
   },
   methods: {
-    goPostDetail (originalUrl) {
-      this.$router.push({ path: `/post/${getPostId(originalUrl)}` })
+    goPostDetail (item) {
+      let postId = ''
+      if (item.type === 'post') {
+        postId = getPostId(item.originalUrl)
+        this.$router.push({ path: `/post/${postId}` })
+      } else {
+        this.$router.push({ path: `/entry/${item.objectId}` })
+      }
     }
   },
   computed: {

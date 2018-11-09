@@ -14,15 +14,17 @@ module.exports = merge(baseConfig, {
   },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: 'js/[name].js',
-    publicPath: isDev ? 'http://localhost:8082/' : '/'
+    filename: 'js/[name].[hash].js',
+    publicPath: isDev ? 'http://localhost:8082/' : '/',
+    chunkFilename: 'js/[name].[hash].js'
   },
   module: {
     rules: utils.styleLoaders()
   },
   optimization: {
     splitChunks: {
-      chunks: 'all'
+      chunks: 'all',
+      name: true
     },
     runtimeChunk: true
   },
@@ -40,9 +42,5 @@ module.exports = merge(baseConfig, {
     hot: true,
     historyApiFallback: true,
     hotOnly: true
-    // koa中统一代理，这里不用webpack的代理
-    /* proxy: {
-      '/api': 'https://api.yunlu6.com'
-    } */
   }
 })
