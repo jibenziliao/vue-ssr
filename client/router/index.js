@@ -1,6 +1,7 @@
 import Router from 'vue-router'
 
 const Post = () => import('views/post/Post.vue')
+const Entry = () => import('views/entry/Entry.vue')
 const Home = () => import('views/home/Home.vue')
 
 export default () => {
@@ -17,6 +18,12 @@ export default () => {
       }, {
         path: '/post/:id',
         component: Post,
+        meta: {
+          keepAlive: false
+        }
+      }, {
+        path: '/entry/:id',
+        component: Entry,
         meta: {
           keepAlive: false
         }

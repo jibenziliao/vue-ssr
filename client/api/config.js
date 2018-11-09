@@ -13,5 +13,6 @@ export const hostConfig = {
   gold: '/gold',
   lccro: '/lccro',
   follow: '/follow',
-  event: '/event'
+  event: '/event',
+  entry: '/entry'
 }
