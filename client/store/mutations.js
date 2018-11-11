@@ -27,7 +27,6 @@ export default {
   },
 
   [types.FETCH_SUCCESS] (state, { params, res }) {
-    state.pageLoading = false
     if (res.data) {
       params.resolveFn(state, res)
     } else {
