@@ -6,10 +6,11 @@ module.exports = {
   optimization: {},
   resolve: {
     alias: {
-      views: path.resolve(__dirname, '../client/views'),
-      common: path.resolve(__dirname, '../client/common'),
-      api: path.resolve(__dirname, '../client/api'),
-      store: path.resolve(__dirname, '../client/store')
+      views: path.resolve(__dirname, '../client/views/'),
+      common: path.resolve(__dirname, '../client/common/'),
+      component: path.resolve(__dirname, '../client/component/'),
+      api: path.resolve(__dirname, '../client/api/'),
+      store: path.resolve(__dirname, '../client/store/')
     }
   },
   module: {

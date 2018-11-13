@@ -2,40 +2,29 @@ import * as types from './mutationTypes'
 export default {
   [types.REQUEST_BEGIN] (state) {
     state.loading = true
-    state.loadSuccess = false
   },
 
-  [types.REQUEST_SUCCESS] (state, { params, res }) {
+  [types.REQUEST_SUCCESS] (state) {
     state.loading = false
-    if (res.data) {
-      state.loadSuccess = true
-      params.resolveFn(state, res)
-    } else {
-      state.loadSuccess = false
-      params.rejectFn(state, res)
-    }
   },
 
-  [types.REQUEST_FAILED] (state, { params, err }) {
+  [types.REQUEST_FAILED] (state) {
     state.loading = false
-    state.loadSuccess = false
-    params.rejectFn(state, err)
   },
 
   [types.FETCH_BEGIN] (state) {
     state.pageLoading = true
   },
 
-  [types.FETCH_SUCCESS] (state, { params, res }) {
-    if (res.data) {
-      params.resolveFn(state, res)
-    } else {
-      params.rejectFn(state, res)
-    }
+  [types.FETCH_SUCCESS] (state) {
+    state.pageLoading = false
   },
 
-  [types.FETCH_FAILED] (state, { params, err }) {
+  [types.FETCH_FAILED] (state) {
     state.pageLoading = false
-    params.rejectFn(state, err)
+  },
+
+  [types.SAVE_SCROLL] (state, { params }) {
+    state.scrollMap[params.name] = params.value
   }
 }

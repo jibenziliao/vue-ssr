@@ -1,16 +1,8 @@
 export default {
-  loading: false,
   pageLoading: false,
-  loadSuccess: false,
-  entryList: [],
-  categoryList: [],
-  category: '',
+  loading: false,
+  scrollMap: {}, // 页面滚动高度集合
   sort: '',
   postId: '',
-  tagIds: '',
-  info: {}, // 文章详细信息
-  content: {}, // 文章全文等
-  commentList: [],
-  commentCount: 0,
-  recommendEntry: []
+  tagIds: ''
 }

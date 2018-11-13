@@ -43,37 +43,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { asyncRequest, format } from '../../common/utils'
-import { hostConfig } from '../../api/config'
+import { format } from 'common/utils'
 export default {
+  name: 'Entry',
   data () {
     return {
     }
   },
-  async asyncData ({ store, route, side = 'server', cookies }) {
-    let { res, state } = await asyncRequest({
-      url: `${hostConfig.timeline}/get_entry_by_ids`,
-      method: 'get',
-      params: {
-        src: 'web',
-        entryIds: route.params.id
-      }
-    }, store, side, cookies)
-    let result = await asyncRequest({
-      url: `${hostConfig.entry}/getEntryView`,
-      method: 'get',
-      params: {
-        src: 'web',
-        entryId: route.params.id
-      }
-    }, store, side, cookies)
-    if (res.data.m === 'ok') {
-      state.info = res.data.d.entrylist[0]
-    }
-    if (result.res.data.m === 'ok') {
-      result.state.content = result.res.data.d.content
-    }
-    state.pageLoading = false
+  asyncData ({ store, route, side = 'server', cookies }) {
+    return store.dispatch('getEntryByIds', { side, cookies, id: route.params.id })
   },
   methods: {
     formatDate (formatStr, date) {

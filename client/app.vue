@@ -29,4 +29,11 @@ export default {
 
 <style lang="scss">
   @import "./styles/common";
+  #app {
+    min-height: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
 </style>

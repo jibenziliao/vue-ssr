@@ -4,6 +4,7 @@ import store from '../../store/index'
  * @param {args} args 对象参数包含action类型、url、method、params、data
  */
 const requestFn = (args) => {
+  console.log(store())
   return new Promise((resolve, reject) => {
     store().dispatch(args.action || 'action', {
       url: args.url || '',
@@ -12,7 +13,7 @@ const requestFn = (args) => {
       data: args.data || {},
       side: args.side || 'client',
       resolveFn: (state, res) => {
-        resolve({ state: state, res: res })
+        resolve({ state, res })
       },
       rejectFn: (state, err) => {
         reject(err)

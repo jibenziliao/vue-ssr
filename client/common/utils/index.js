@@ -55,10 +55,30 @@ const format = (fmt, date) => {
   }
 }
 
+/**
+ * 设置scrollTop的值，兼容所有浏览器
+ * @param {Number} scrollTop 距离窗口顶部的高度
+ */
+const setScrollTop = (scrollTop = 0, dom) => {
+  if (dom) {
+    dom.scrollTop = scrollTop
+    // 滚动容器有padding，滚动视图时，会导致document.body一同滚动一定的距离(padding或margin的值)
+    document.documentElement.scrollTop = scrollTop
+    document.body.scrollTop = scrollTop
+  } else {
+    if (document.body.scrollTop === 0) {
+      document.documentElement.scrollTop = scrollTop
+    } else {
+      document.body.scrollTop = scrollTop
+    }
+  }
+}
+
 export {
   requestFn,
   asyncRequest,
   timeFormat,
   getPostId,
-  format
+  format,
+  setScrollTop
 }

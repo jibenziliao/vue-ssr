@@ -1,74 +1,40 @@
 <template>
-  <div class="list-page">
-    <ul class="entry-list">
-      <li v-for="item in entryList"
-          :key="item.originalUrl"
-          class="item"
-          @click="goPostDetail(item)">
-        <div class="content-box">
-          <div class="info-box">
-            <div class="info-row meta-row">
-              <ul class="meta-list">
-                <li class="row-item username clickable">
-                  <a>{{item.user.username}}</a>
-                </li>
-                <li v-if="item.tags && item.tags.length > 0"
-                    class="row-item">
-                  {{item.tags[0].title}}
-                </li>
-              </ul>
-            </div>
-            <div class="info-row title-row">
-              <a v-if="item.title"
-                 class="title">{{item.title}}</a>
-            </div>
-            <div class="info-row action-row">
-              <ul class="action-list">
-                <li class="row-item like">
-                  <a class="title-box">
-                    <i class="iconfont icon-dianzan item-icon"></i>
-                    <span class="count">{{item.collectionCount}}</span>
-                  </a>
-                </li>
-                <li class="row-item comment">
-                  <a class="title-box">
-                    <i class="iconfont icon-pinglun item-icon"></i>
-                    <span class="count">{{item.commentsCount}}</span>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </li>
-    </ul>
+  <div class="list-page"
+       :style="{'height': scrollHeight}"
+       ref="homeWrapper">
+    <list :list="entryList"
+          @click="goPostDetail">
+    </list>
+    <mugen-scroll :handler="loadBottom"
+                  :handle-on-mount="false"
+                  :should-handle="!loading"
+                  scroll-container="homeWrapper">
+      <div class="entry-loading">
+        <div class="placeholder-block"></div>
+        <div class="placeholder-block short"></div>
+      </div>
+    </mugen-scroll>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import { asyncRequest, getPostId } from '../../common/utils'
-import { hostConfig } from '../../api/config'
+import { getPostId, setScrollTop } from '../../common/utils'
+import MugenScroll from 'vue-mugen-scroll'
+import List from '../../component/post/List.vue'
 export default {
+  name: 'Home',
   data () {
     return {
-
+      scrollHeight: '1334px'
     }
   },
-  async asyncData ({ store, route, side = 'server', cookies }) {
-    let { state, res } = await asyncRequest({
-      url: `${hostConfig.timeline}/get_entry_by_rank`,
-      method: 'get',
-      params: {
-        src: 'web',
-        limit: 20,
-        category: 'all',
-        sort: 'popular'
-      }
-    }, store, side, cookies)
-    if (res.data.m === 'ok') {
-      state.entryList = res.data.d.entrylist
-    }
+  asyncData ({ store, route, side = 'server', cookies }) {
+    return store.dispatch('getEntry', { side, cookies })
+  },
+  components: {
+    MugenScroll,
+    List
   },
   methods: {
     goPostDetail (item) {
@@ -79,96 +45,59 @@ export default {
       } else {
         this.$router.push({ path: `/entry/${item.objectId}` })
       }
+    },
+    getEntry () {
+      this.$store.dispatch('getEntryNext', { side: 'client' })
+    },
+    loadBottom () {
+      this.getEntry()
+    },
+    handleScrollHeight () {
+      this.scrollHeight = document.getElementById('app').offsetHeight + 'px'
     }
   },
+  mounted () {
+    this.handleScrollHeight()
+  },
+  activated () {
+    setScrollTop(this.$store.state.scrollMap.Home || 0, this.$refs.homeWrapper)
+  },
+  beforeRouteLeave (to, from, next) {
+    this.$store.dispatch('saveScroll', { name: 'Home', value: this.$refs.homeWrapper.scrollTop })
+    next()
+  },
   computed: {
-    ...mapGetters(['entryList'])
+    ...mapGetters([
+      'entryList',
+      'loading'
+    ])
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .entry-list {
+  @import "../../styles/variables.scss";
+  .list-page {
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  .entry-loading {
     width: 100%;
-    background-color: #fff;
-    .item {
-      border-bottom: 1px solid rgba(178, 186, 194, 0.15);
-      .content-box {
-        display: flex;
-        align-items: center;
-        padding: 36px 48px;
-        .info-box {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          justify-content: center;
-          flex: 1 1 auto;
-          min-width: 0;
-          .meta-row {
-            font-size: 24px;
-            color: #b2bac2;
-            .meta-list {
-              display: flex;
-              align-items: baseline;
-              white-space: nowrap;
-              .row-item:not(:last-child):after {
-                content: "\B7";
-                margin: 0 0.4em;
-                color: #b2bac2;
-              }
-            }
-          }
-          .title-row {
-            margin: 12px 0 24px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            .title {
-              font-size: 28px;
-              font-weight: 600;
-              line-height: 1.2;
-              color: #2e3135;
-            }
-            .title:visited {
-              color: #909090;
-            }
-          }
-          .action-list {
-            display: inline-flex;
-            white-space: nowrap;
-            .row-item {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: relative;
-              height: 36px;
-              font-size: 24px;
-              border: 1px solid #edeeef;
-              line-height: 1;
-              white-space: nowrap;
-              color: #b2bac2;
-              .title-box {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0 20px;
-                height: 100%;
-                .item-icon {
-                  font-size: 26px;
-                  color: #b2bac2;
-                  margin-right: 10px;
-                }
-              }
-            }
-            .like {
-              margin-right: -1px;
-            }
-            .comment {
-              margin-left: -1px;
-            }
-          }
-        }
-      }
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    height: 220px;
+    flex-direction: column;
+    padding: 36px 48px;
+    box-sizing: border-box;
+    .placeholder-block {
+      height: 40px;
+      width: 500px;
+      background-color: $placeholder-color;
+    }
+    .short {
+      width: 200px;
+      margin-top: 30px;
     }
   }
 </style>

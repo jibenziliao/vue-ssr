@@ -43,39 +43,15 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { asyncRequest, format } from '../../common/utils'
-import { hostConfig } from '../../api/config'
+import { format } from 'common/utils'
 export default {
+  name: 'Post',
   data () {
     return {
     }
   },
-  async asyncData ({ store, route, side = 'server', cookies }) {
-    let { res, state } = await asyncRequest({
-      url: `${hostConfig.post}/getDetailData`,
-      method: 'get',
-      params: {
-        src: 'web',
-        postId: route.params.id,
-        type: 'entry'
-      }
-    }, store, side, cookies)
-    let result = await asyncRequest({
-      url: `${hostConfig.post}/getDetailData`,
-      method: 'get',
-      params: {
-        src: 'web',
-        postId: route.params.id,
-        type: 'entryView'
-      }
-    }, store, side, cookies)
-    if (res.data.m === 'ok') {
-      state.info = res.data.d
-    }
-    if (result.res.data.m === 'ok') {
-      result.state.content = result.res.data.d.transcodeContent
-    }
-    state.pageLoading = false
+  asyncData ({ store, route, side = 'server', cookies }) {
+    return store.dispatch('getPostInfo', { side, cookies, id: route.params.id })
   },
   methods: {
     formatDate (formatStr, date) {

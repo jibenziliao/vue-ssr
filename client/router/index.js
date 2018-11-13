@@ -12,28 +12,25 @@ export default () => {
       {
         path: '/',
         component: Home,
+        name: 'Home',
         meta: {
           keepAlive: true
         }
       }, {
         path: '/post/:id',
         component: Post,
+        name: 'Post',
         meta: {
           keepAlive: false
         }
       }, {
         path: '/entry/:id',
         component: Entry,
+        name: 'Entry',
         meta: {
           keepAlive: false
         }
       }
-    ],
-    scrollBehavior (to) {
-      return {
-        x: 0,
-        y: 0
-      }
-    }
+    ]
   })
 }
