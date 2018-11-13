@@ -54,10 +54,16 @@ export default {
     },
     handleScrollHeight () {
       this.scrollHeight = document.getElementById('app').offsetHeight + 'px'
+    },
+    resetScrollHeight () {
+      window.addEventListener('resize', () => {
+        this.handleScrollHeight()
+      })
     }
   },
   mounted () {
     this.handleScrollHeight()
+    this.resetScrollHeight()
   },
   activated () {
     setScrollTop(this.$store.state.scrollMap.Home || 0, this.$refs.homeWrapper)
