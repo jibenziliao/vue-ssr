@@ -1,28 +1,10 @@
 <template>
   <div class="post-container">
-    <div v-if="pageLoading"
-         class="page-loading">
-      <div class="placeholder-block">
-        <div class="author-info">
-          <div class="placeholder circle"></div>
-          <div class="content">
-            <div class="placeholder short"></div>
-            <div class="placeholder long"></div>
-          </div>
-        </div>
-        <div class="placeholder img"></div>
-        <div class="comment">
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder short-comment"></div>
-        </div>
-      </div>
-    </div>
-    <div v-else
+    <post-loading v-show="pageLoading"></post-loading>
+    <div v-show="!pageLoading"
          class="post-content">
-      <div class="author-info">
+      <div v-if="info.user"
+           class="author-info">
         <img :src="info.user.avatarLarge"
              alt=""
              class="avatar">
@@ -43,12 +25,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { format } from 'common/utils'
+import { format } from '../../common/utils'
+const PostLoading = () => import('./Loading.vue')
 export default {
   name: 'Post',
   data () {
     return {
     }
+  },
+  components: {
+    PostLoading
   },
   asyncData ({ store, route, side = 'server', cookies }) {
     return store.dispatch('getPostInfo', { side, cookies, id: route.params.id })
@@ -71,6 +57,7 @@ export default {
 <style lang="scss" scoped>
   @import "../../styles/variables.scss";
   @import url("https://cdn.bootcss.com/github-markdown-css/2.10.0/github-markdown.min.css");
+
   .post-container {
     padding: 0 48px;
     .article-title {
@@ -124,55 +111,6 @@ export default {
             margin-right: 30px;
           }
         }
-      }
-    }
-  }
-  .placeholder-block {
-    padding-top: 48px;
-    .placeholder {
-      background-color: $placeholder-color;
-      height: 30px;
-      width: 200px;
-    }
-    .author-info {
-      height: 80px;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      .circle {
-        height: 80px;
-        width: 80px;
-        border-radius: 100%;
-        margin-right: 20px;
-      }
-    }
-    .content {
-      height: 80px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .long {
-      width: 260px;
-    }
-    .short {
-      width: 100px;
-    }
-    .img {
-      width: 100%;
-      height: 400px;
-      margin-top: 40px;
-    }
-    .comment {
-      margin-top: 40px;
-      width: 100%;
-      div {
-        width: 100%;
-        margin-bottom: 20px;
-      }
-      .short-comment {
-        width: 300px;
       }
     }
   }

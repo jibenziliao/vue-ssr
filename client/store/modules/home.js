@@ -24,9 +24,9 @@ const truncateArray = arr => {
 }
 
 const actions = {
-  getEntry ({ commit }, params) {
+  async getEntry ({ commit }, params) {
     commit(types.FETCH_BEGIN, null)
-    return commonRequest({
+    let res = await commonRequest({
       url: `${hostConfig.timeline}/get_entry_by_rank`,
       method: 'get',
       params: {
@@ -36,14 +36,17 @@ const actions = {
         sort: 'popular'
       },
       ...params
-    }, res => {
+    })
+    if (res.data && res.data.m === 'ok') {
       commit('getEntry', { params, res })
       commit(types.FETCH_SUCCESS, { params, res })
-    }, err => commit(types.FETCH_FAILED, { params, err }))
+    } else {
+      commit(types.FETCH_FAILED)
+    }
   },
-  getEntryNext ({ commit, state }, params) {
+  async getEntryNext ({ commit, state }, params) {
     commit(types.REQUEST_BEGIN, params)
-    return commonRequest({
+    let res = await commonRequest({
       url: `${hostConfig.timeline}/get_entry_by_rank`,
       method: 'get',
       params: {
@@ -54,10 +57,13 @@ const actions = {
         before: state.rankIndex
       },
       side: params.side
-    }, res => {
+    })
+    if (res.data && res.data.m === 'ok') {
       commit('getEntryNext', { params, res })
       commit(types.REQUEST_SUCCESS, { params, res })
-    }, err => commit(types.REQUEST_FAILED, { params, err }))
+    } else {
+      commit(types.REQUEST_FAILED)
+    }
   }
 }
 

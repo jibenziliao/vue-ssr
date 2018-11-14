@@ -1,28 +1,10 @@
 <template>
   <div class="post-container">
-    <div v-if="pageLoading"
-         class="page-loading">
-      <div class="placeholder-block">
-        <div class="author-info">
-          <div class="placeholder circle"></div>
-          <div class="content">
-            <div class="placeholder short"></div>
-            <div class="placeholder long"></div>
-          </div>
-        </div>
-        <div class="placeholder img"></div>
-        <div class="comment">
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder"></div>
-          <div class="placeholder short-comment"></div>
-        </div>
-      </div>
-    </div>
-    <div v-else
+    <post-loading v-show="pageLoading"></post-loading>
+    <div v-show="!pageLoading"
          class="post-content">
-      <div class="author-info">
+      <div v-if="info.user"
+           class="author-info">
         <img :src="info.user.avatarLarge"
              alt=""
              class="avatar">
@@ -43,12 +25,16 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { format } from 'common/utils'
+import { format } from '../../common/utils'
+const PostLoading = () => import('../post/Loading.vue')
 export default {
   name: 'Entry',
   data () {
     return {
     }
+  },
+  components: {
+    PostLoading
   },
   asyncData ({ store, route, side = 'server', cookies }) {
     return store.dispatch('getEntryByIds', { side, cookies, id: route.params.id })

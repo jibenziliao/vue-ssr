@@ -26,7 +26,7 @@ const commonRequest = (params, resolve, reject) => {
       Cookie: cookie
     },
     timeout: REQUEST_TIME_OUT
-  }).then(res => resolve(res)).catch(err => reject(err))
+  })
 }
 
 export {

@@ -19,9 +19,9 @@ const getters = {
 }
 
 const actions = {
-  getPostInfo ({ dispatch, commit }, params) {
+  async getPostInfo ({ commit }, params) {
     commit(types.FETCH_BEGIN)
-    return commonRequest({
+    let res = await commonRequest({
       url: `${hostConfig.post}/getDetailData`,
       method: 'get',
       params: {
@@ -31,13 +31,8 @@ const actions = {
       },
       side: params.side,
       cookies: params.cookies
-    }, res => {
-      commit('getPostInfo', { params, res })
-      dispatch('getPostDetail', params)
-    }, err => commit(types.FETCH_FAILED, { params, err }))
-  },
-  getPostDetail ({ commit }, params) {
-    return commonRequest({
+    })
+    let result = await commonRequest({
       url: `${hostConfig.post}/getDetailData`,
       method: 'get',
       params: {
@@ -47,14 +42,20 @@ const actions = {
       },
       side: params.side,
       cookies: params.cookies
-    }, res => {
-      commit('getPostDetail', { params, res })
+    })
+    if (res.data && res.data.m === 'ok') {
+      commit('getPostInfo', { params, res })
+    }
+    if (result.data && res.data.m === 'ok') {
+      commit('getPostDetail', { params, res: result })
       commit(types.FETCH_SUCCESS)
-    }, err => commit(types.FETCH_FAILED, { params, err }))
+    } else {
+      commit(types.FETCH_FAILED)
+    }
   },
-  getEntryByIds ({ dispatch, commit }, params) {
+  async getEntryByIds ({ commit }, params) {
     commit(types.FETCH_BEGIN)
-    return commonRequest({
+    let res = await commonRequest({
       url: `${hostConfig.timeline}/get_entry_by_ids`,
       method: 'get',
       params: {
@@ -63,13 +64,8 @@ const actions = {
       },
       side: params.side,
       cookies: params.cookies
-    }, res => {
-      commit('getEntryByIds', { params, res })
-      dispatch('getEntryView', params)
-    }, err => commit(types.FETCH_FAILED, { params, err }))
-  },
-  getEntryView ({ commit }, params) {
-    return commonRequest({
+    })
+    let result = await commonRequest({
       url: `${hostConfig.entry}/getEntryView`,
       method: 'get',
       params: {
@@ -78,10 +74,16 @@ const actions = {
       },
       side: params.side,
       cookies: params.cookies
-    }, res => {
-      commit('getEntryView', { params, res })
+    })
+    if (res.data && res.data.m === 'ok') {
+      commit('getEntryByIds', { params, res })
+    }
+    if (result.data && result.data.m === 'ok') {
+      commit('getEntryView', { params, res: result })
       commit(types.FETCH_SUCCESS)
-    }, err => commit(types.FETCH_FAILED, { params, err }))
+    } else {
+      commit(types.FETCH_FAILED)
+    }
   }
 }
 

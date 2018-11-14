@@ -1,5 +1,3 @@
-import { requestFn, asyncRequest } from './request'
-
 const timeFormatArr = [0, 60, 3600, 86400, 2592000, 31104000, Number.MAX_VALUE]
 const timeUnit = ['刚刚', '分钟前', '小时前', '天前', '月前', '年前']
 
@@ -75,8 +73,6 @@ const setScrollTop = (scrollTop = 0, dom) => {
 }
 
 export {
-  requestFn,
-  asyncRequest,
   timeFormat,
   getPostId,
   format,
