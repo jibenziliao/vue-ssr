@@ -1,6 +1,6 @@
 {
   "name": "vue-ssr",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "vue ssr demo",
   "main": "index.js",
   "scripts": {
@@ -85,7 +85,7 @@
     "vue-template-compiler": "^2.5.17",
     "webpack": "^4.27.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-dev-server": "^3.1.14",
     "webpack-merge": "^4.1.4"
   }
 }
